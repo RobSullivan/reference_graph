@@ -28,7 +28,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     conf = config.get(args.env, overrides=vars(args))  # Note that the environment is optional (it can use a config environment instead)
-    logger = logging.getLogger("logger_for_template")
+    logger = logging.getLogger("reference_graph_logger")
     logger.info("These are our args: {}".format(args))
     logger.info("This is our configuration: {}".format(conf))
     logger.info("This is an example log message, logging is configured once config.get() has been called")
