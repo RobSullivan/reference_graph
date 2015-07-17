@@ -96,9 +96,9 @@ if __name__ == "__main__":
 	#init class
 	ancestor_references = AncestorRef(seed_doi, seed_reference_list, db_conn)
 	#get the list of ancestor references
-	ancestor_references_list = ancestor_references.ancestor_refs
+	seed_ancestor_references_list = ancestor_references.ancestor_refs
 	#flatten the list
-	all_the_refs = ancestor_references.flatten(ancestor_references_list)
+	all_the_refs = ancestor_references.flatten(seed_ancestor_references_list)
 	print("Total number of ancestor references: ", len(all_the_refs))
 	
 	#init a counter
@@ -106,7 +106,7 @@ if __name__ == "__main__":
 
 	top_common_ancestors = common_ancestor.most_common(5)
 
-	results = ancestor_references.seed_ref_match_common_ans(ancestor_references_list, top_common_ancestors)
+	results = ancestor_references.seed_ref_match_common_ans(seed_ancestor_references_list, top_common_ancestors)
 	
 	for i in results['super_ancestors']:
 		print(i)
