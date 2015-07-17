@@ -3,13 +3,24 @@ from itertools import zip_longest
 from source_ref import *
 
 import networkx as nx
+import pylab
+
+"""
+use ipython --matplotlib
+
+and import pylab
+
+HOWTO: http://matplotlib.org/faq/installing_faq.html#windows-installer
+
+"""
+
 
 seed_doi = "10.1038/nature11543"
 
 seed_edges = []
 ancestor_edges = []
 
-MDG = nx.DiGraph()
+MDG = nx.MultiDiGraph()
 
 seed = load_seed_reference_data(seed_doi)
 
@@ -43,3 +54,6 @@ for ref in seed_ancestor_references_list:
 
 
 MDG.add_edges_from(ancestor_edges)
+
+nx.draw(MDG, pos=nx.spring_layout(MDG)) # a mess
+
