@@ -13,6 +13,8 @@ use ipython
 
 I need to know titles and pmids of all articles at the very least.
 
+
+
 """
 
 
@@ -89,13 +91,32 @@ for key, value in out_degrees.items():
 		shortest_paths.append(nx.all_shortest_paths(MDG, source=key, target=seed_node['_id']))
 		
 
+"""
+Create subgraph from shortest_paths 
+Create json for d3
+Use as starting point for users as graph is less clutered 
+and present useful information from the outset.
+If the user wants to 'see all' then chuck up full graph
 
+
+What data to add to nodes? 
+http://networkx.github.io/documentation/latest/reference/generated/networkx.readwrite.json_graph.node_link_data.html?highlight=node_link_data#networkx.readwrite.json_graph.node_link_data
 
 
 """
-Select subgraph from graph using source and target
+subgraph_edges = []
 
-"""
+for i in shortest_paths:
+	subgraph_edges.append([p for p in i])
+
+flattened_subgraph_nodes = nx.utils.misc.flatten(subgraph_edges)
+common_references_subgraph = MDG.subgraph(flattened_subgraph_nodes)
+
+subgraph_data = json_graph.node_link_data(common_references_subgraph)
+
+with open('subgraph_data.json', 'w') as f:
+	json.dump(subgraph_data, f, indent=4, default=json_util.default)
+
 
 """
 Output graph to json for d3.js
@@ -107,4 +128,7 @@ Output graph to json for d3.js
 data = json_graph.node_link_data(MDG)
 
 with open('data.json', 'w') as f:
-	json.dump(data, f, default=json_util.default)
+	json.dump(data, f, indent=4, default=json_util.default)
+
+
+
