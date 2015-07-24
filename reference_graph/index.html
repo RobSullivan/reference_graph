@@ -40,6 +40,22 @@ var svg = d3.select("body").append("svg")
     .append("g")
 
 
+svg.append("defs").selectAll("marker")
+    .data(["suit", "licensing", "resolved"])
+  .enter().append("marker")
+    .attr("id", function(d) { return d; })
+    .attr("viewBox", "0 -5 10 10")
+    .attr("refX", 25)
+    .attr("refY", 0)
+    .attr("markerWidth", 6)
+    .attr("markerHeight", 6)
+    .attr("orient", "auto")
+  .append("path")
+    .attr("d", "M0,-5L10,0L0,5 L10,0 L0, -5")
+    .style("stroke", "#4679BD")
+    .style("opacity", "0.6");
+
+
 function zoom(){
   svg.attr("transform", "translate("
     + d3.event.translate
@@ -48,7 +64,7 @@ function zoom(){
 
 
 
-d3.json("data.json", function(error, graph) {
+d3.json("nature11543.json", function(error, graph) {
   if (error) throw error;
 
   force
@@ -61,6 +77,7 @@ d3.json("data.json", function(error, graph) {
       .enter().append("line")
       .attr("class", "link")
       .style("stroke-width", function(d) { return Math.sqrt(d.value); })
+      .style("marker-end",  "url(#suit)"); // Modified line 
 
 
   var node = svg.selectAll(".node")
@@ -71,7 +88,7 @@ d3.json("data.json", function(error, graph) {
       .attr("transform", function (d) {
                 return "translate(" + d + ")";
             })
-      .style("fill", function(d) { return color(d.id.level); })
+      .style("fill", function(d) { return color(d.level); })
       .call(force.drag);
 
   node.append("title")

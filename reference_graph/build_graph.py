@@ -27,17 +27,24 @@ MDG = nx.MultiDiGraph()
 
 seed = load_seed_reference_data(seed_doi)
 
-seed_node = seed.next()
+seed_node = next(seed)
 
 seed_reference_list = [i for i in seed_node['references']]
+
+
 
 for i in zip_longest(seed_node['references'], [seed_node['_id']],\
 		fillvalue=seed_node['_id']):
 	seed_edges.append(i)
 
-MDG.add_edges_from(seed_edges)
 
-#print("predecessors: ",MDG.predecessors(seed_node['_id']))
+
+
+
+
+
+
+
 
 """
 
@@ -50,12 +57,23 @@ ancestor_references = AncestorRef(seed_doi, seed_reference_list, db_conn)
 
 seed_ancestor_references_list = ancestor_references.ancestor_refs
 
+flattened_ancestor_refs = ancestor_references.flatten(seed_ancestor_references_list)
+
+
 for ref in seed_ancestor_references_list:
 	for i in zip_longest(ref['references'], [ref['_id']],\
 		fillvalue=ref['_id']):
 	    ancestor_edges.append(i)
 
 
+"""
+Add all the nodes and edges
+"""
+
+MDG.add_node(seed_node['_id'], level=0)
+MDG.add_nodes_from(flattened_ancestor_refs, level=2)
+MDG.add_nodes_from(seed_reference_list, level=1)
+MDG.add_edges_from(seed_edges)
 MDG.add_edges_from(ancestor_edges)
 
 #nx.draw(MDG, pos=nx.spring_layout(MDG)) # a mess
@@ -67,7 +85,7 @@ In edges represent "cites" relationship
 
 """
 
-out_degrees = MDG.out_degrees()
+out_degrees = MDG.out_degree()
 
 highest_out_degrees = sorted(out_degrees.values(), reverse=True)
 
@@ -114,7 +132,9 @@ common_references_subgraph = MDG.subgraph(flattened_subgraph_nodes)
 
 subgraph_data = json_graph.node_link_data(common_references_subgraph)
 
-with open('subgraph_data.json', 'w') as f:
+subgraph_filename = 'subgraph_'+seed_doi.split('/')[1]+'.json'
+
+with open(subgraph_filename, 'w') as f:
 	json.dump(subgraph_data, f, indent=4, default=json_util.default)
 
 
@@ -127,7 +147,9 @@ Output graph to json for d3.js
 
 data = json_graph.node_link_data(MDG)
 
-with open('another_data.json', 'w') as f:
+file_name = seed_doi.split('/')[1]+'.json'
+
+with open(file_name, 'w') as f:
 	json.dump(data, f, indent=4, default=json_util.default)
 
 
