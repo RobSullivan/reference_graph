@@ -127,7 +127,7 @@ Output graph to json for d3.js
 
 data = json_graph.node_link_data(MDG)
 
-with open('data.json', 'w') as f:
+with open('another_data.json', 'w') as f:
 	json.dump(data, f, indent=4, default=json_util.default)
 
 
