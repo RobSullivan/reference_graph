@@ -6,7 +6,7 @@ from source_ref import *
 
 import networkx as nx
 from networkx.readwrite import json_graph
-import pylab
+#import pylab
 
 """
 use ipython 
@@ -154,3 +154,18 @@ with open(file_name, 'w') as f:
 
 
 
+"""
+Eigenvector centrality not defined for MultiDiGraph
+so need to create a new graph
+
+"""
+
+EigG = nx.Graph()
+EigG.add_node(seed_node['_id'], level=0)
+EigG.add_nodes_from(flattened_ancestor_refs, level=2)
+EigG.add_nodes_from(seed_reference_list, level=1)
+EigG.add_edges_from(seed_edges)
+EigG.add_edges_from(ancestor_edges)
+
+
+centrality = nx.eigenvector_centrality_numpy(EigG)
