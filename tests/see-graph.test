@@ -1,0 +1,21 @@
+- name: See graph
+  scenario:
+    - Load website
+    - Fill form:
+        id_pmid: 17151072
+    - Click: build-me-a-graph
+    - Wait to contain:
+        item: title
+        text: An improved method to identify BAC clones useing pooled overgos
+    - Wait to contain:
+        item: publication-year
+        text: "2007"
+    - Wait to contain:
+        item: citation-count
+        text: "8"
+    - Wait to contain:
+        item: author
+        text: Madishetty
+    - Wait to contain:
+        item: doi
+        text: 10.1093/nar/gkl920

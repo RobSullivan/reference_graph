@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+    
+{% block content %}
+
+<h1>Find article</h1>
+<form class="form-horizontal" method="post" action="">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <div class="control-group">
+        <div class="controls">
+        <button id="build-me-a-graph" type="submit" class="btn btn-primary">Build me a graph</button>
+        </div>
+    </div>
+</form>
+
+{% endblock %}
