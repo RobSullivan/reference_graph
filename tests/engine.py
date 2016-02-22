@@ -11,7 +11,7 @@ import hitchsmtp
 
 # Get directory above this file
 PROJECT_DIRECTORY = path.abspath(path.join(path.dirname(__file__), '..'))
-
+print(PROJECT_DIRECTORY)
 
 class ExecutionEngine(hitchtest.ExecutionEngine):
     """Engine for orchestating and interacting with the app."""
